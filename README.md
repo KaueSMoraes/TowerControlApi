@@ -33,7 +33,6 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
 - Try-Cath para tratamento de Exceptions que podem ser geradas na pilha de chamadas do controller.
 - Verbos HTTPS que refletem o retorno correto da Api
   
-```markdown
 ````csharp
     [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     [ApiController]
@@ -73,7 +72,8 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
                 return StatusCode(500, "Internal Server Error: " + e.Message);
                 throw; 
             }
-        } ``
+        }
+```
 
 ## Services
 
