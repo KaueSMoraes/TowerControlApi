@@ -32,8 +32,9 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
 - Encapsulamento do objeto de Serviço
 - Try-Cath para tratamento de Exceptions que podem ser geradas na pilha de chamadas do controller.
 - Verbos HTTPS que refletem o retorno correto da Api
-  
-````csharp
+
+~~~markdown
+```csharp
     [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     [ApiController]
     [Route("api")]
@@ -74,7 +75,7 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
             }
         }
 
----
+```
 
 
 ## Services
