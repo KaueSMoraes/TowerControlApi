@@ -74,7 +74,8 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
             }
         }
 
-```
+---
+
 
 ## Services
 
