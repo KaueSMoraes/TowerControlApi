@@ -257,10 +257,10 @@ Qualquer api de mercado, precisa que seu processo de autenticação esteja bem d
 - Autentica todas as requisições destinadas aos Endpoints.
 
 ## Infraestrutura
-Voltado para uma infra economica e escalável, foi utilizado neste projeto tecnologias de conternerização, orquestração de containers junto com tecnologias de qualidade de codigo , continuous integration e continous deployment.
+Com foco em uma infraestrutura econômica e escalável, este projeto adotou tecnologias de contêinerização, orquestração de contêineres, bem como ferramentas para garantir a qualidade do código e implementar integração e implantação contínuas.
 
 - ### Docker
-    Como principal ferramenta de conteinerização do mercado para isolar e administrar aplições foi utilizada pensado na economia de recursos e segurança.
+    Nós optamos pelo Docker como principal ferramenta de conteinerização do mercado para isolar e gerenciar aplicações, visando a economia de recursos e aprimoramento da segurança.
     
     - Como utilizar localmente ?
             
@@ -284,9 +284,30 @@ Voltado para uma infra economica e escalável, foi utilizado neste projeto tecno
 
             $ docker push ${registry}/${nameRepository}/${nameImage}
 
-            
+        depois da publicação da imagem, realizar a criação da secret regcred que ira armazenar a credencial do seu registry.
+        
+        #### Exemplo:
 
-        após isso a aplicação estará disponivel escutando pela porta 5000 da sua máquina.
+        ``` YAML
+            apiVersion: v1
+            kind: Secret
+            metadata:
+                name: regcred
+                namespace: administration-painel
+            data:
+                .dockerconfigjson: ${CREDENTIALS} # Registry Credential
+            type: kubernetes.io/dockerconfigjson
+        ```
+        E por fim realizar a aplicação dos manifestos:
+
+            Kubectl apply -f .
+- ### CI/CD
+  Utilizamos em nosso CI/CD a ferramenta GitLab. O CI/CD é de extrema importância para uma aplicação moderna e para microserviços. Quando criamos as integrações e o deployment de forma automatizada, temos mais agilidade, além de menor risco de indisponibilidade do serviço. Isso também nos permite utilizar ferramentas que verificam a qualidade do código nos merge requests. Para utilizar o CI/CD, além da adaptação para sua ferramenta, também é necessário que haja os arquivos na esteira.
+        
+        AUTHBASIC -> Responsavel pela autenticação da API
+         
+        SSHKEY -> Responsavel pela comunicação com os servidores.
+
 ### Conclusão
 
 A TowerControlApi é uma solução robusta e avançada destinada a facilitar a gestão e manutenção de servidores Linux que suportam a aplicação Protheus, utilizando tecnologias modernas e práticas recomendadas no desenvolvimento de APIs em ASP.NET Core. Este projeto encapsula uma série de funcionalidades críticas para o gerenciamento eficiente de infraestrutura de TI, demonstrando uma arquitetura bem planejada e uma implementação cuidadosa.
