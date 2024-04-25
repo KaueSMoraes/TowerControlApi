@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: administration-painel
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+  namespace: administration-painel
+data:
+  .dockerconfigjson: ${CREDENTIALS}
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adm-painel
+  namespace: administration-painel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adm-painel
+  template:
+    metadata:
+      labels:
+        app: adm-painel
+    spec:
+      containers:
+      - name: adm-painel
+        image: IMAGE_DEPLOY
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+          name: swagger
+          protocol: TCP
+      imagePullSecrets:
+      - name: regcred
+
