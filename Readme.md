@@ -1,4 +1,9 @@
 ### TowerControlApi
+[![.NET](https://img.shields.io/badge/.NET-8.0.1-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0.1)
+[![Docker](https://img.shields.io/badge/Docker-19.03.13-blue.svg)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-1.21.0-blue.svg)](https://kubernetes.io/)
+[![GitLab CI](https://img.shields.io/badge/GitLab_CI-16.10-orange.svg)](https://gitlab.com/)
+
 Aplicação WEB API em  ASP.NET CORE para gerenciar serviços Linux.
 
 ### Gerenciamento de Servidores Linux para Aplicação Protheus
@@ -17,7 +22,10 @@ O projeto consiste em uma API Web em ASP .NET desenvolvida para realizar operaç
 - Serviços RESTful
 - Servidores Linux
 - Aplicação Protheus
-
+- Kubernetes
+- Docker
+- CI/CD
+- Code Analysis 
 ### Frameworks e Bibliotecas Adicionais
 - SSH.NET
 - Swashbuckle.AspNetCore
@@ -248,6 +256,37 @@ namespace AssemblyMaster.Entities
 Qualquer api de mercado, precisa que seu processo de autenticação esteja bem definido e tratado. Devido a aplicação já possuir muitos outros métodos apartados de segurança cibernética, e devido ao sensibilidade dessas informações, o modelo público do projeto visa mostrar apenas um EXEMPLO de uma autenticação Basic Auth.
 - Autentica todas as requisições destinadas aos Endpoints.
 
+## Infraestrutura
+Voltado para uma infra economica e escalável, foi utilizado neste projeto tecnologias de conternerização, orquestração de containers junto com tecnologias de qualidade de codigo , continuous integration e continous deployment.
+
+- ### Docker
+    Como principal ferramenta de conteinerização do mercado para isolar e administrar aplições foi utilizada pensado na economia de recursos e segurança.
+    
+    - Como utilizar localmente ?
+            
+            $ git clone https://github.com/MKM-SOLUTIONS/WebApp--MKM.git    
+
+            $ docker buildx build -t ${youruser}/${nameImage} .
+
+            $ docker run -p 5000:5000 ${youruser}/${nameImage}
+
+        após isso a aplicação estará disponivel escutando pela porta 5000 da sua máquina.
+
+- ### Kubernetes
+    Como estamos trabalhando com containers precisamos de ambiente confiavel, um ótimo orquestrador de containers para podermos gerênciar de forma eficaz nossa aplicão, utilizaramos nesta aplicação um cluster kubernetes, sendo capaz de realizar escalabidade horizontal, limitação de recursos, controle de ingresso em caso de serviços publicos, criar roles de controle de acessos e garantir a alta disponibilidade
+    
+    - Como utilizar localmente ?
+    Utilizando um cluster como : MiniKube ou K3D        
+            
+            $ git clone https://github.com/MKM-SOLUTIONS/WebApp--MKM.git    
+
+            $ docker buildx build -t ${youruser}/${nameImage} .
+
+            $ docker push ${registry}/${nameRepository}/${nameImage}
+
+            
+
+        após isso a aplicação estará disponivel escutando pela porta 5000 da sua máquina.
 ### Conclusão
 
 A TowerControlApi é uma solução robusta e avançada destinada a facilitar a gestão e manutenção de servidores Linux que suportam a aplicação Protheus, utilizando tecnologias modernas e práticas recomendadas no desenvolvimento de APIs em ASP.NET Core. Este projeto encapsula uma série de funcionalidades críticas para o gerenciamento eficiente de infraestrutura de TI, demonstrando uma arquitetura bem planejada e uma implementação cuidadosa.
