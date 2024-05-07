@@ -33,6 +33,9 @@ O projeto consiste em uma API Web em ASP .NET desenvolvida para realizar operaç
 - Newtonsoft.Json
 
 ## ApiController
+
+![image](https://github.com/KaueSMoraes/TowerControlApi/assets/126820310/a777b531-5d91-4011-9e07-90f8c8ab7629)
+
 Neste exemplo abaixo mostra como os controllers devem ser contruídos: 
 - Definição da Rota Principal da API
 - Content-Type de gerenciamento (application/json);
