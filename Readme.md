@@ -86,8 +86,6 @@ Neste exemplo abaixo mostra como os controllers devem ser contruídos:
             }
         }
 ```
-```
-```
 
 ## Services
 Neste projeto os Services são definidos no prórprio controller, por isso são encpasulados para serem acionados sob medida de requisição. 
@@ -159,11 +157,9 @@ namespace AssemblyMaster.Services
 }
 
 ```
-```
-```
 
 ## Entities
-As entidades ou Modelos, são os Objetos principais de uma Solution ou Assembly. Elas devidem as camadas da aplicação em objetos que refletem o "mundo-real".
+As entidades ou Modelos, são os Objetos principais de uma Solution ou Assembly. Elas definem as camadas da aplicação em objetos que refletem o "mundo-real".
 Entre as características que mais definem as entidades estão:
 - Definição de atributos dos Objetos, ou Propriedades.
 - Construtores e suas Sobrecargas
@@ -252,8 +248,7 @@ namespace AssemblyMaster.Entities
 }
 
 ```
-```
-```
+
 
 ## Authentication
 Qualquer api de mercado, precisa que seu processo de autenticação esteja bem definido e tratado. Devido a aplicação já possuir muitos outros métodos apartados de segurança cibernética, e devido ao sensibilidade dessas informações, o modelo público do projeto visa mostrar apenas um EXEMPLO de uma autenticação Basic Auth.
