@@ -8,6 +8,10 @@ Aplicação WEB API em  ASP.NET CORE para gerenciar serviços Linux.
 
 ### Gerenciamento de Servidores Linux para Aplicação Protheus
 
+#### Swagger
+https://app.swaggerhub.com/apis/KAUE040803/TowerControlExample/v1#/
+
+
 ### Descrição
 O projeto consiste em uma API Web em ASP .NET desenvolvida para realizar operações de gerenciamento em servidores Linux que suportam a aplicação Protheus. A API recebe requisições através de diversos controladores, os quais são direcionados para serviços específicos. Estes serviços atuam como ponte com as entidades do sistema, utilizando construtores avançados para manipular objetos e retornar status e resultados para os controladores.
 
