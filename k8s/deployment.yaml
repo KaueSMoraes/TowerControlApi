@@ -38,6 +38,9 @@ spec:
         - containerPort: 5000
           name: swagger
           protocol: TCP
+        - containerPort: 5002
+          name: oauth
+          protocol: TCP
       imagePullSecrets:
       - name: regcred
 
