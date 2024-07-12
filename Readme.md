@@ -321,4 +321,5 @@ O design cuidadoso dos Services e Entities reflete a complexidade e as necessida
 Por fim, o sistema de autenticação implementado serve como uma camada fundamental de segurança, assegurando que apenas usuários autorizados possam acessar funcionalidades críticas. Este projeto não apenas atende às necessidades atuais de administração de sistemas mas também estabelece uma base sólida para futuras expansões e integrações, demonstrando uma excelente aplicação das capacidades do ASP.NET Core em ambientes de produção reais.
 
 
+![Imagem do WhatsApp de 2024-07-12 à(s) 19 11 52_72111ec9](https://github.com/user-attachments/assets/adf0a8a1-d64a-4ab0-8edf-268c8b2416fc)
 
