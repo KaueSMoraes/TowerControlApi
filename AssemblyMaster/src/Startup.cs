@@ -4,7 +4,6 @@ using Microsoft.Extensions.Hosting;
 using AssemblyMaster.Services;
 using Microsoft.OpenApi.Models;
 using AssemblyMaster.Utilities;
-using AssemblyMaster.Security;
 using Microsoft.AspNetCore.Authentication;
 
 namespace AssemblyMaster
@@ -20,11 +19,10 @@ namespace AssemblyMaster
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<UserAuthenticationService>();
-            services.AddAuthentication("BasicAuthentication")
-                    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddScoped<IServerService, ServerService>();
+            services.AddScoped<IActionsService, ActionsService>();
+            services.AddControllers(options => options.Filters.Add<ApiExceptionFilter>())
+                .AddNewtonsoftJson();
             services.AddEndpointsApiExplorer();
             services.AddScoped<ServerService>();
             services.AddScoped<ActionsService>();
@@ -49,7 +47,7 @@ namespace AssemblyMaster
             }
 
             app.UseHttpsRedirection();
-            app.UseRouting(); // Certifique-se de que esta chamada ocorra apenas uma vez
+            app.UseRouting();
 
             app.UseAuthentication(); // Autenticação deve vir antes da Autorização
             app.UseAuthorization(); // Autorização deve vir antes dos Endpoints

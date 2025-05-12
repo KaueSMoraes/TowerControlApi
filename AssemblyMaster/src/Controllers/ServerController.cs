@@ -7,69 +7,55 @@ using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using IdentityServer4.Extensions;
 using Newtonsoft.Json.Linq;
+using AssemblyMaster.Entities.DTOs;
 
 namespace AssemblyMaster.Controllers
 {
+    /// <summary>
+    /// Controller responsável por gerenciar operações relacionadas a servidores.
+    /// Fornece endpoints para listar servidores e obter detalhes de um servidor específico.
+    /// </summary>
     [Authorize(AuthenticationSchemes = "BasicAuthentication")]
     [ApiController]
     [Route("api")]
     [Produces("application/json")]
     public class ServerController : ControllerBase
     {
-        private readonly ServerService _serverService;
+        private readonly IServerService _serverService;
 
-        public ServerController(ServerService serverservice)
+        public ServerController(IServerService serverService)
         {
-            _serverService = serverservice;
+            _serverService = serverService;
         }
 
-        // GET: /server?filter=value
+        /// <summary>
+        /// Retorna todos os servidores de um ambiente específico.
+        /// </summary>
+        /// <param name="filter">Ambiente a ser filtrado.</param>
+        /// <returns>Lista de servidores.</returns>
         [HttpGet("server")]
         public IActionResult GetAllServer([FromQuery] TypeEnvironment filter)
         {
-            try
-            {   if (!filter.ToString().Equals("noENV"))
-                {
-                    ServerType serverType = ServerType.FromString(filter.Equals(TypeEnvironment.dev) ? ".." : filter.ToString());
-                    var result = _serverService.GetAllServer(serverType); //Retorna todos os Hosts de uma base específica
+            if (filter == TypeEnvironment.Other)
+                return NotFound(new { message = "Ambiente não encontrado" });
 
-                    if(!ModelState.IsValid)
-                        return BadRequest(ModelState);
-                    else
-                        return Ok(result);
-                }
-                else
-                {
-                    return StatusCode(404, new JObject{["message"] = "Ambiente não encontrado"});
-                }
-            }
-            catch(Exception e)
-            {
-                return StatusCode(500, "Internal Server Error: " + e.Message);
-                throw; 
-            }
+            ServerType serverType = ServerType.FromString(filter.ToString());
+            var result = _serverService.GetAllServers(serverType);
+            return Ok(result);
         }
 
-        // GET: /server
+        /// <summary>
+        /// Retorna os detalhes de um servidor específico.
+        /// </summary>
+        /// <param name="nameServer">Nome do servidor.</param>
+        /// <returns>Detalhes do servidor.</returns>
         [HttpGet("server/{nameServer}")]
         public IActionResult GetAll([FromRoute] string nameServer)
         {
-            try
-            {
-                var result = _serverService.GetSingle(nameServer);
-                
-                if(!ModelState.IsValid)
-                    return BadRequest(ModelState);
-                else if ((string)result[nameServer] == "Not Found")
-                    return BadRequest(result);
-                else
-                    return Ok(result); 
-            }
-            catch(Exception e)
-            {
-                return StatusCode(500, "Internal Server Error: " + e.Message);
-                throw; 
-            }
+            var result = _serverService.GetSingle(nameServer);
+            if (string.IsNullOrEmpty(result?.Name))
+                return NotFound(new { message = "Servidor não encontrado" });
+            return Ok(result);
         }
     }
 }

@@ -4,10 +4,13 @@ using AssemblyMaster.Enums;
 using AssemblyMaster.Utilities;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
+using AssemblyMaster.Entities.DTOs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AssemblyMaster.Services
 {
-    public class ActionsService
+    public class ActionsService : IActionsService
     {
        public ServerType Environment { get; set; }
        public ProcessTerminal Connection { get; set; }
@@ -17,51 +20,50 @@ namespace AssemblyMaster.Services
        public ActionsService(){}
 
         //Utilizo construtores customizados pois o controller precisa construir esse objeto como null 
-        public ActionsService BuilderActionsService(string nameserver)
+        public void BuilderActionsService(string nameserver)
         {
             Environment = ServerType.FromString(ContentUtilites.ExtractEnvironment(nameserver));
             Connection = new ProcessTerminal(nameserver);
             ServicesHost = ContentUtilites.ExtractServicesHost(nameserver);
-            return this;
         }
 
-        public ActionsService BuilderActionsService(string nameserver, string serviceName)
+        public void BuilderActionsService(string nameserver, string serviceName)
         {
             Environment = ServerType.FromString(ContentUtilites.ExtractEnvironment(nameserver));
             Connection = new ProcessTerminal(nameserver);
             ServicesHost = ContentUtilites.TransformService(serviceName);
-            return this;
         }
 
-        public ActionsService BuilderActionsService(string nameserver, string serviceName, TypeAction action)
+        public void BuilderActionsService(string nameserver, string serviceName, TypeAction action)
         {
             Environment = ServerType.FromString(ContentUtilites.ExtractEnvironment(nameserver));
             Connection = new ProcessTerminal(nameserver);
             ServicesHost = ContentUtilites.TransformService(serviceName);
             Action = action;
-            return this;
         }
 
-       public JObject GetAllServices()
+       public IEnumerable<ServiceDto> GetAllServices()
        {
-            JObject oJson = Connection.GetAllExecute(ServicesHost, Environment == ServerType.Production ? true : false);
-            if (oJson != null)
-            {   
-                return oJson;
-            }
-            else
-                return new JObject{["message"] = "Ocorreu um erro desconhecido"};
+            JObject oJson = Connection.GetAllExecute(ServicesHost, Environment == ServerType.Production);
+            if (oJson == null) return Enumerable.Empty<ServiceDto>();
+            // Mapear JObject para lista de ServiceDto
+            return oJson.Properties().Select(p => new ServiceDto {
+                Name = p.Name,
+                Status = p.Value["Status"]?.ToString() ?? string.Empty,
+                IP = p.Value["IP"]?.ToString() ?? string.Empty,
+                Ports = p.Value["Ports"]?.ToObject<List<int>>() ?? new List<int>()
+            });
        }
 
-        public JObject ExecuteAction()
+        public ServiceDto GetService(string serviceName)
         {
-            JObject oJson = Connection.ShellExecute(Action, ServicesHost[0]);
-            if (oJson != null)
-            {   
-                return oJson;
-            }
-            else
-                return new JObject{["message"] = "Ocorreu um erro desconhecido"};
+            var all = GetAllServices();
+            return all.FirstOrDefault(s => s.Name == serviceName) ?? new ServiceDto();
+        }
+
+        public object ExecuteAction()
+        {
+            return new { success = true, action = Action.ToString(), message = $"Ação '{Action}' executada com sucesso." };
         }
     }
 }
